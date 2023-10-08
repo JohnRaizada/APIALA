@@ -1,0 +1,261 @@
+Hide navigation sidebarHide table of contents sidebar
+LlamaIndex 🦙 0.8.41
+GETTING STARTED
+
+Installation and Setup
+Starter Tutorial
+High-Level Concepts
+Customization Tutorial
+END-TO-END TUTORIALS
+
+Basic Usage Pattern
+One-Click Observability
+Principled Development Practices
+Discover LlamaIndex Video Series
+Finetuning
+Building RAG from Scratch (Lower-Level)
+Use Cases
+INDEX/DATA MODULES
+
+Data Connectors (LlamaHub)
+Documents / Nodes
+Node Parser
+Storage
+Indexes
+QUERY MODULES
+
+Query Engine
+Chat Engine
+Retriever
+Routers
+Node Postprocessor
+Response Synthesizer
+Structured Outputs
+AGENT MODULES
+
+Data Agents
+Tools
+MODEL MODULES
+
+LLM
+Embeddings
+Prompts
+SUPPORTING MODULES
+
+ServiceContext
+Callbacks
+Evaluation
+Cost Analysis
+Playground
+DEVELOPMENT
+
+Contributing to LlamaIndex
+Documentation Guide
+Privacy and Security
+ChangeLog
+COMMUNITY
+
+Integrations
+App Showcase
+API REFERENCE
+
+API Reference
+Indices
+Querying an Index
+Node
+LLM Predictors
+LLMs
+Prompt Templates
+Embeddings
+OpenAIEmbedding
+HuggingFaceEmbedding
+OptimumEmbedding
+InstructorEmbedding
+LangchainEmbedding
+GoogleUnivSentEncoderEmbedding
+Node Postprocessor
+Storage Context
+Composability
+Data Connectors
+Service Context
+Embeddings
+OpenAIEmbedding
+HuggingFaceEmbedding
+OptimumEmbedding
+InstructorEmbedding
+LangchainEmbedding
+GoogleUnivSentEncoderEmbedding
+Node Parser
+PromptHelper
+LLMs
+Callbacks
+Structured Index Configuration
+Evaluation
+Response
+Playground
+Finetuning
+Memory
+Example Notebooks
+Langchain Integrations
+Deprecated Terms
+Sponsored: EthicalAds
+Monetize your audience: Fund an OSS project or website with EthicalAds, a privacy-first ad network
+Ad by EthicalAds   ·   ℹ️
+ v: latest
+Back to top
+Edit this page
+Toggle Light / Dark / Auto color theme
+PromptHelper
+General prompt helper that can help deal with LLM context window token limitations.
+
+At its core, it calculates available context size by starting with the context window size of an LLM and reserve token space for the prompt template, and the output.
+
+It provides utility for “repacking” text chunks (retrieved from index) to maximally make use of the available context window (and thereby reducing the number of LLM calls needed), or truncating them so that they fit in a single LLM call.
+
+pydantic model llama_index.indices.prompt_helper.PromptHelper
+Prompt helper.
+
+General prompt helper that can help deal with LLM context window token limitations.
+
+At its core, it calculates available context size by starting with the context window size of an LLM and reserve token space for the prompt template, and the output.
+
+It provides utility for “repacking” text chunks (retrieved from index) to maximally make use of the available context window (and thereby reducing the number of LLM calls needed), or truncating them so that they fit in a single LLM call.
+
+PARAMETERS
+context_window (int) – Context window for the LLM.
+
+num_output (int) – Number of outputs for the LLM.
+
+chunk_overlap_ratio (float) – Chunk overlap as a ratio of chunk size
+
+chunk_size_limit (Optional[int]) – Maximum chunk size to use.
+
+tokenizer (Optional[Callable[[str], List]]) – Tokenizer to use.
+
+separator (str) – Separator for text splitter
+
+Show JSON schema
+FIELDS
+chunk_overlap_ratio (float)
+
+chunk_size_limit (Optional[int])
+
+context_window (int)
+
+num_output (int)
+
+separator (str)
+
+field chunk_overlap_ratio: float = 0.1
+The percentage token amount that each chunk should overlap.
+
+field chunk_size_limit: Optional[int] = None
+The maximum size of a chunk.
+
+field context_window: int = 3900
+The maximum context size that will get sent to the LLM.
+
+field num_output: int = 256
+The amount of token-space to leave in input for generation.
+
+field separator: str = ' '
+The separator when chunking tokens.
+
+classmethod class_name() → str
+Get the class name, used as a unique ID in serialization.
+
+This provides a key that makes serialization robust against actual class name changes.
+
+classmethod construct(_fields_set: Optional[SetStr] = None, **values: Any) → Model
+Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data. Default values are respected, but no other validation is performed. Behaves as if Config.extra = ‘allow’ was set since it adds all passed values
+
+copy(*, include: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, exclude: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, update: Optional[DictStrAny] = None, deep: bool = False) → Model
+Duplicate a model, optionally choose which fields to include, exclude and change.
+
+PARAMETERS
+include – fields to include in new model
+
+exclude – fields to exclude from new model, as with values this takes precedence over include
+
+update – values to change/add in the new model. Note: the data is not validated before creating the new model: you should trust this data
+
+deep – set to True to make a deep copy of the model
+
+RETURNS
+new model instance
+
+dict(*, include: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, exclude: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, by_alias: bool = False, skip_defaults: Optional[bool] = None, exclude_unset: bool = False, exclude_defaults: bool = False, exclude_none: bool = False) → DictStrAny
+Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+
+classmethod from_dict(data: Dict[str, Any], **kwargs: Any) → Self
+classmethod from_json(data_str: str, **kwargs: Any) → Self
+classmethod from_llm_metadata(llm_metadata: LLMMetadata, chunk_overlap_ratio: float = 0.1, chunk_size_limit: Optional[int] = None, tokenizer: Optional[Callable[[str], List]] = None, separator: str = ' ') → PromptHelper
+Create from llm predictor.
+
+This will autofill values like context_window and num_output.
+
+classmethod from_orm(obj: Any) → Model
+get_text_splitter_given_prompt(prompt: BasePromptTemplate, num_chunks: int = 1, padding: int = 5) → TokenTextSplitter
+Get text splitter configured to maximally pack available context window, taking into account of given prompt, and desired number of chunks.
+
+json(*, include: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, exclude: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None, by_alias: bool = False, skip_defaults: Optional[bool] = None, exclude_unset: bool = False, exclude_defaults: bool = False, exclude_none: bool = False, encoder: Optional[Callable[[Any], Any]] = None, models_as_dict: bool = True, **dumps_kwargs: Any) → unicode
+Generate a JSON representation of the model, include and exclude arguments as per dict().
+
+encoder is an optional function to supply as default to json.dumps(), other arguments as per json.dumps().
+
+classmethod parse_file(path: Union[str, Path], *, content_type: unicode = None, encoding: unicode = 'utf8', proto: Protocol = None, allow_pickle: bool = False) → Model
+classmethod parse_obj(obj: Any) → Model
+classmethod parse_raw(b: Union[str, bytes], *, content_type: unicode = None, encoding: unicode = 'utf8', proto: Protocol = None, allow_pickle: bool = False) → Model
+repack(prompt: BasePromptTemplate, text_chunks: Sequence[str], padding: int = 5) → List[str]
+Repack text chunks to fit available context window.
+
+This will combine text chunks into consolidated chunks that more fully “pack” the prompt template given the context_window.
+
+classmethod schema(by_alias: bool = True, ref_template: unicode = '#/definitions/{model}') → DictStrAny
+classmethod schema_json(*, by_alias: bool = True, ref_template: unicode = '#/definitions/{model}', **dumps_kwargs: Any) → unicode
+to_dict(**kwargs: Any) → Dict[str, Any]
+to_json(**kwargs: Any) → str
+truncate(prompt: BasePromptTemplate, text_chunks: Sequence[str], padding: int = 5) → List[str]
+Truncate text chunks to fit available context window.
+
+classmethod update_forward_refs(**localns: Any) → None
+Try to update ForwardRefs on fields based on this Model, globalns and localns.
+
+classmethod validate(value: Any) → Model
+Next
+Callbacks
+Previous
+Node Parser
+Copyright © 2022, Jerry Liu
+Made with Sphinx and @pradyunsg's Furo
+ON THIS PAGE
+PromptHelper
+PromptHelper.chunk_overlap_ratio
+PromptHelper.chunk_size_limit
+PromptHelper.context_window
+PromptHelper.num_output
+PromptHelper.separator
+PromptHelper.class_name()
+PromptHelper.construct()
+PromptHelper.copy()
+PromptHelper.dict()
+PromptHelper.from_dict()
+PromptHelper.from_json()
+PromptHelper.from_llm_metadata()
+PromptHelper.from_orm()
+PromptHelper.get_text_splitter_given_prompt()
+PromptHelper.json()
+PromptHelper.parse_file()
+PromptHelper.parse_obj()
+PromptHelper.parse_raw()
+PromptHelper.repack()
+PromptHelper.schema()
+PromptHelper.schema_json()
+PromptHelper.to_dict()
+PromptHelper.to_json()
+PromptHelper.truncate()
+PromptHelper.update_forward_refs()
+PromptHelper.validate()
+🦙
+
+CTRL + K
